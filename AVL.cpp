@@ -19,7 +19,8 @@ struct AVL
 
     ~AVL()
     {
-
+        delete left;
+        delete right;
     }
 
     int leftheight()
@@ -49,8 +50,8 @@ struct AVL
         }
         else if(b<-1)
         {
-            if(this->right->getbalance()>=0) return this->rl();
-            else return this->ll();
+            if(this->right->getbalance()<=0) return this->ll();
+            else return this->rl();
         }
         else return this;
     }
@@ -119,13 +120,12 @@ struct AVL
 
     void printTree(int space = 0, int indent = 5)
     {
-        if (!this) return;
 
         // Increase distance between levels
         space += indent;
 
         // Print right child first
-        this->right->printTree(space, indent);
+        if(right)this->right->printTree(space, indent);
 
         // Print current node after spaces
         cout << endl;
@@ -134,7 +134,7 @@ struct AVL
         cout << this->val << "\n";
 
         // Print left child
-        this->left->printTree(space, indent);
+        if(left)this->left->printTree(space, indent);
     }
 
 };
@@ -163,7 +163,7 @@ int main()
 
     // Test duplicates
     cout << "Trying duplicate insert (should warn):\n";
-    root = root->insert(20);
+    root = root->insert(10);
 
     cout << "\nFinal inorder traversal:\n";
     root->inorder();
